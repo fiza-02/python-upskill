@@ -20,10 +20,13 @@ def decorator_function(original_function):
         return original_function()
     return wrapper_function
 
+@decorator_function
 def display():
     print('display function ran')
-decorated_display = decorator_function(display)
-decorated_display()
+# display= decorator_function(display)
+display()
+#this is a decorator.
+
 
 
 # my_s=decorator_function("kiko")
