@@ -1,46 +1,31 @@
-"""
-print("Hello CodeSandbox!")
+# Practical Examples
 
-def outer_function():
-    message= "hi" #free variable
+def my_logger(orig_func):
+    import logging
+    logging.basicConfig(filename='{}.log'.format(orig_func.__name__), level=logging.INFO)
 
-    def inner_function():
-        print(message)
-    return inner_function
-my_func=outer_function()
-my_func()
-my_func()
+    def wrapper(*args, **kwargs):
+        logging.info(
+            'Ran with args: {}, and kwargs: {}'.format(args, kwargs))
+        return orig_func(*args, **kwargs)
 
-"""
+    return wrapper
 
 
-def decorator_function(original_function):
-    def wrapper_function(*args,**kwargs):
-        print('wrapper executed this before {}'.format(original_function.__name__))
-        return original_function(*args,**kwargs)
-    return wrapper_function
+def my_timer(orig_func):
+    import time
 
-@decorator_function #display= decorator_function(display)
-def display():
-    print('display function ran')
-# display= decorator_function(display)
-display()
-#this is a decorator.
+    def wrapper(*args, **kwargs):
+        t1 = time.time()
+        result = orig_func(*args, **kwargs)
+        t2 = time.time() - t1
+        print('{} ran in: {} sec'.format(orig_func.__name__, t2))
+        return result
 
-@decorator_function
+    return wrapper
+
+@my_logger
 def display_info(name,age):
     print('display_info ran with arguments ({},{})'.format(name,age))
 
-'''
-    display_info("viswa",23)
-TypeError: decorator_function.<locals>.wrapper_function() takes 0 positional arguments but 2 were given
-display_info("viswa",23)
-'''
-display_info("viswa",23)
-'''
-output:
-wrapper executed this before display_info
-display_info ran with arguments (viswa,23)
-'''
-# my_s=decorator_function("kiko")
-# my_s()
+display_info("yasmin",22)
