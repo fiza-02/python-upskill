@@ -24,8 +24,14 @@ def my_timer(orig_func):
 
     return wrapper
 
-@my_logger
+import time
+@my_timer
 def display_info(name,age):
+    time.sleep(1)
     print('display_info ran with arguments ({},{})'.format(name,age))
 
 display_info("yasmin",22)
+'''
+display_info ran with arguments (yasmin,22)
+display_info ran in: 1.0017402172088623 sec
+'''
